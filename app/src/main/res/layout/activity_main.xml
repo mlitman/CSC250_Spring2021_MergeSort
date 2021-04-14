@@ -7,25 +7,20 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/inputET"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter a number"
-        android:inputType="numberDecimal"
-        android:textSize="30sp" />
-
     <Button
+        android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onFactorialButtonClicked"
-        android:text="Calculate Factorial" />
+        android:onClick="onMergeSortButtonClicked"
+        android:text="Start Merge Sort" />
 
-    <TextView
-        android:id="@+id/answerTV"
+    <ListView
+        android:id="@+id/theCallsToMergeSortLV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="30sp" />
+        android:layout_height="300dp" />
+
+    <ListView
+        android:id="@+id/listOfNumbersLV"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
 </LinearLayout>

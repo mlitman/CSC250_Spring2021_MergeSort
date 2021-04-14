@@ -4,52 +4,85 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 {
-    private EditText inputET;
-    private TextView answerTV;
+    private ListView listOfNumbersLV;
+    private ArrayList<String> theListOfNumbersAsStrings;
+    private ArrayAdapter<String> theListOfNumbersAdapter;
+
+    private ListView theCallsToMergeSortLV;
+    private ArrayList<String> theListOfMergeSortCalls;
+    private ArrayAdapter<String> theCallsToMergeSortAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.inputET = this.findViewById(R.id.inputET);
-        this.answerTV = this.findViewById(R.id.answerTV);
+        this.listOfNumbersLV = this.findViewById(R.id.listOfNumbersLV);
+
+        //this guy will show the parts of the arraylist we are working on in mergesort
+        this.theListOfMergeSortCalls = new ArrayList<String>();
+        this.theCallsToMergeSortAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,
+                this.theListOfMergeSortCalls);
+        this.theCallsToMergeSortLV = this.findViewById(R.id.theCallsToMergeSortLV);
+        this.theCallsToMergeSortLV.setAdapter(this.theCallsToMergeSortAdapter);
+
+
+        this.theListOfNumbersAsStrings = new ArrayList<String>();
+        this.theListOfNumbersAsStrings.add("5");
+        this.theListOfNumbersAsStrings.add("2");
+        this.theListOfNumbersAsStrings.add("8");
+        this.theListOfNumbersAsStrings.add("3");
+        this.theListOfNumbersAsStrings.add("13");
+        this.theListOfNumbersAsStrings.add("5");
+        this.theListOfNumbersAsStrings.add("5");
+        this.theListOfNumbersAsStrings.add("8");
+        this.theListOfNumbersAsStrings.add("1");
+
+        this.theListOfNumbersAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,
+                this.theListOfNumbersAsStrings);
+
+        this.listOfNumbersLV.setAdapter(theListOfNumbersAdapter);
     }
 
-    private int factorialIter(int n)
+    private String buildStringFromPartOfList(ArrayList<String> theList, int begin, int end)
     {
-        int runningTotal = n;
-        for(int i = n - 1; i > 0; i--)
+        String s = "";
+        for(int i = begin; i <= end; i++)
         {
-            runningTotal *= i;
+            s = s + theList.get(i) + " ";
         }
-        return runningTotal;
+        return s;
     }
 
-    private int factorialRec(int n)
+    private void mergeSort(ArrayList<String> theList, int begin, int end)
     {
-        if(n == 1) return 1;
-        return n * factorialRec(n-1);
+        //ask if this list is trivially sorted
+        //I only want to do anything inside mergeSort if it is NOT trivially sorted
+        String currentPartOfArray = this.buildStringFromPartOfList(theList, begin, end);
+        this.theListOfMergeSortCalls.add(currentPartOfArray);
+        this.theCallsToMergeSortAdapter.notifyDataSetChanged();
+
+        if(begin != end)
+        {
+            //I do NOT have a 1-list, so I need to divide my list in half and
+            //call mergesort on the right and the left
+            //HW: update the theListOfMergeSortCalls to show all of the individual calls we
+            //make to mergesort
+        }
     }
 
-    private int factorialRec2(int n)
+    public void onMergeSortButtonClicked(View v)
     {
-        //Inline if statement
-        // boolean_exp?true_exp;false_exp;
-        return n == 1?1:n * factorialRec2(n-1);
+        this.mergeSort(this.theListOfNumbersAsStrings,
+                0, this.theListOfNumbersAsStrings.size()-1);
     }
-
-    public void onFactorialButtonClicked(View v)
-    {
-        String currValue = this.inputET.getText().toString();
-        int currValueAsInt = Integer.parseInt(currValue);
-        this.answerTV.setText("" + this.factorialRec2(currValueAsInt));
-    }
-
-
 }
